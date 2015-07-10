@@ -40,12 +40,10 @@ import com.github.jorgecastilloprz.utils.LibraryUtils;
  */
 public class FABProgressCircle extends FrameLayout implements ArcListener, CompleteFABListener {
 
-  private final int SIZE_NORMAL = 1;
-  private final int SIZE_MINI = 2;
-
   private int arcColor;
   private int arcWidth;
   private int circleSize;
+  private int contentSize;
   private boolean roundedStroke;
   private boolean reusable;
 
@@ -90,7 +88,8 @@ public class FABProgressCircle extends FrameLayout implements ArcListener, Compl
         arcWidth = attrArray.getDimensionPixelSize(R.styleable.FABProgressCircle_arcWidth,
             getResources().getDimensionPixelSize(R.dimen.progress_arc_stroke_width));
         completeIconDrawable = attrArray.getDrawable(R.styleable.FABProgressCircle_finalIcon);
-        circleSize = attrArray.getInt(R.styleable.FABProgressCircle_circleSize, 1);
+        circleSize = attrArray.getDimensionPixelSize(R.styleable.FABProgressCircle_circleSize, getResources().getDimensionPixelOffset(R.dimen.fab_size_normal));
+        contentSize = attrArray.getDimensionPixelSize(R.styleable.FABProgressCircle_contentSize, getResources().getDimensionPixelSize(R.dimen.fab_content_size));
         roundedStroke = attrArray.getBoolean(R.styleable.FABProgressCircle_roundedStroke, false);
         reusable = attrArray.getBoolean(R.styleable.FABProgressCircle_reusable, false);
       } finally {
@@ -106,10 +105,7 @@ public class FABProgressCircle extends FrameLayout implements ArcListener, Compl
   @Override protected void onFinishInflate() {
     super.onFinishInflate();
     checkChildCount();
-  }
 
-  @Override protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-    super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     if (!viewsAdded) {
       addArcView();
       setupFab();
@@ -193,7 +189,7 @@ public class FABProgressCircle extends FrameLayout implements ArcListener, Compl
   }
 
   private void addCompleteFabView() {
-    completeFABView = new CompleteFABView(getContext(), completeIconDrawable, arcColor);
+    completeFABView = new CompleteFABView(getContext(), completeIconDrawable, arcColor, contentSize);
     completeFABView.attachListener(this);
     addView(completeFABView,
         new FrameLayout.LayoutParams(getFabDimension(), getFabDimension(), Gravity.CENTER));
@@ -218,10 +214,6 @@ public class FABProgressCircle extends FrameLayout implements ArcListener, Compl
   }
 
   private int getFabDimension() {
-    if (circleSize == SIZE_NORMAL) {
-      return getResources().getDimensionPixelSize(R.dimen.fab_size_normal);
-    } else {
-      return getResources().getDimensionPixelSize(R.dimen.fab_size_mini);
-    }
+    return circleSize;
   }
 }

@@ -42,13 +42,15 @@ public class CompleteFABView extends FrameLayout {
 
   private Drawable iconDrawable;
   private int arcColor;
+  private int contentSize;
   private CompleteFABListener listener;
   private boolean viewsAdded;
 
-  public CompleteFABView(Context context, Drawable iconDrawable, int arcColor) {
+  public CompleteFABView(Context context, Drawable iconDrawable, int arcColor, int contentSize) {
     super(context);
     this.iconDrawable = iconDrawable;
     this.arcColor = arcColor;
+    this.contentSize = contentSize;
     init();
   }
 
@@ -83,7 +85,6 @@ public class CompleteFABView extends FrameLayout {
   }
 
   private void setupContentSize() {
-    int contentSize = (int) getResources().getDimension(R.dimen.fab_content_size);
     int mContentPadding = (getChildAt(0).getMeasuredWidth() - contentSize) / 2;
     getChildAt(0).setPadding(mContentPadding, mContentPadding, mContentPadding, mContentPadding);
   }
